@@ -25,4 +25,8 @@ class MarketBasketModel:
         if product not in self.products:
             return None
         recommendations = self.rules[self.rules['antecedents'].apply(lambda x: product in x)]
-        return recommendations if not recommendations.empty else None
+        if recommendations is not None and not recommendations.empty:
+            # Extract only the consequents and ensure they are unique
+            unique_recommendations = set([list(row['consequents'])[0] for _, row in recommendations.iterrows()])
+            return unique_recommendations
+        return None
