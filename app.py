@@ -8,25 +8,33 @@ st.title("Market Basket Analysis")
 st.write("Discover products that are frequently bought together.")
 
 # Initialize the model
-model = MarketBasketModel(min_support=0.02, metric="lift", min_threshold=1)
+model = MarketBasketModel(min_support=0.01, metric="confidence", min_threshold=0.5)
 data = model.load_data('data/data_transactions.csv')
-model.train(data)
+try:
+    model.train(data)
+except Exception as e:
+    st.error(f"Error training the model: {str(e)}")
 
 # Input section
-product = st.text_input("Enter a product to get recommendations (e.g., 'milk', 'bread', 'butter'):")
+product = st.text_input("Enter a product to get recommendations (e.g., 'milk', 'bread', 'butter'):").lower().strip()
 
 # Display recommendations
 if st.button("Get Recommendations"):
     if product:
-        recommendations = model.get_recommendations(product)
-        if recommendations is not None:
-            st.subheader(f"Recommendations for '{product}':")
-            for _, row in recommendations.iterrows():
-                st.write(f"**{list(row['consequents'])[0]}** with a lift of **{row['lift']:.2f}**")
+        if product not in model.products:
+            st.warning(f"Product '{product}' not found in the dataset.")
         else:
-            st.warning(f"No recommendations found for '{product}'. Ensure the product is in the dataset.")
+            recommendations = model.get_recommendations(product)
+            if recommendations is not None and not recommendations.empty:
+                st.subheader(f"Recommendations for '{product}':")
+                for _, row in recommendations.iterrows():
+                    consequent = list(row['consequents'])[0]
+                    confidence = row['confidence'] * 100  # Convert to percentage
+                    st.write(f"**{consequent}** with a confidence of **{confidence:.2f}%**")
+            else:
+                st.warning(f"No recommendations found for '{product}'.")
     else:
-        st.error("Please enter a product name.")
+        st.error("Please enter a product.")
 
 # Footer
 st.markdown(
@@ -38,4 +46,3 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-

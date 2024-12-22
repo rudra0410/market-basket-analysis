@@ -1,0 +1,67 @@
+# Byte-compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+env/
+venv/
+
+# Environment variables and sensitive data
+*.env
+.env.*
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Logs
+*.log
+*.out
+*.err
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE-specific files
+.vscode/
+.idea/
+
+# Streamlit-specific files
+.streamlit/
+
+# Data files
+data/
+*.csv
+*.xlsx
+*.json
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Coverage reports
+.coverage
+*.coverage
+htmlcov/
+
+# Unit test cache
+.tox/
+.nox/
+*.pytest_cache/
+
+# Miscellaneous
+*.bak
+*.swp
+*.tmp
+*.temp
+
+# Generated files
+*.pickle
+*.pkl
+
+# Exclude the compiled Python files and unwanted artifacts
+*.so
+*.dll
+*.dylib
